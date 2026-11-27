@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Personal Website</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday, personal: calm and confident
+   IDEA a survey map of a life: contour terrain, a magenta route through the places this person has worked
+   PICTURE full-bleed topographic map with the career route and labelled stops
+   COLOUR land #fbfbf2, sea #bfe3ee, contour brown #a8551b, ink #13242e, route magenta #d6127e
+   TYPE Overpass 800 display + Overpass text
+   LAYOUT laptop: map fills the hero, name in a legend panel bottom-left; phone: legend panel stacks under the map */
+:root{color-scheme:light dark;--bg:light-dark(#fbfbf2,#0d1c24);--sea:light-dark(#bfe3ee,#123240);--ink:light-dark(#13242e,#e6efe9);--soft:light-dark(#4b5d66,#9fb4bb);--brown:light-dark(#a8551b,#d58a52);--mag:light-dark(#d6127e,#ff5cad);--panel:light-dark(#ffffff,#10252f);--line:light-dark(#d9d8c8,#24414d)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Overpass,system-ui,sans-serif;overflow-x:clip}
+a{color:var(--mag);text-underline-offset:3px}
+.band{padding-block:clamp(40px,6vw,88px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+nav{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:calc(env(safe-area-inset-top,0px) + 18px) max(5vw,16px,env(safe-area-inset-right,0px)) 0 max(5vw,16px,env(safe-area-inset-left,0px))}
+nav b{font-weight:800;font-size:18px}
+nav div{display:flex;flex-wrap:wrap;gap:4px 20px}
+nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding-block:8px}
+nav a:hover{color:var(--mag)}
+.hero{position:relative;min-height:min(92svh,820px);background:var(--bg)}
+.map{position:absolute;inset:0}
+.map svg{width:100%;height:100%;display:block}
+.map text{font:600 14px Overpass,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}
+.legend{position:absolute;left:max(5vw,16px);bottom:max(5vw,24px);z-index:2;width:min(520px,calc(100% - 32px));background:var(--panel);border:1px solid var(--line);padding:28px 30px 26px;box-shadow:6px 6px 0 color-mix(in srgb,var(--brown) 25%,transparent)}
+h1{font-size:clamp(40px,6vw,64px);line-height:1.02;letter-spacing:-.02em;font-weight:800;margin:0 0 12px}
+.legend p{margin:0 0 18px;color:var(--soft)}
+.keys{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--soft);border-top:1px solid var(--line);padding-top:14px}
+.keys span{display:flex;align-items:center;gap:8px}
+.keys i{display:inline-block;width:22px;height:0;border-top:3px solid var(--mag)}
+.keys i.c{border-top:1.5px solid var(--brown)}
+.btn{display:inline-block;background:var(--mag);color:#fff;font-weight:800;text-decoration:none;padding:12px 20px;margin-bottom:18px}
+.btn:hover{background:var(--ink);color:var(--bg)}
+h2{font-size:clamp(30px,4vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;margin:0 0 20px}
+.about{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:start}
+.about p{margin:0 0 16px;max-width:62ch}
+.facts{display:grid;gap:0;border-top:2px solid var(--ink)}
+.facts div{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.facts dt{color:var(--soft)}
+.facts dd{margin:0;font-weight:600}
+.work{background:var(--sea)}
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.proj{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column}
+.proj svg{display:block;width:100%;height:170px;border-bottom:1px solid var(--line)}
+.proj div{padding:20px 22px 24px}
+.proj h3{margin:0 0 6px;font-size:21px;line-height:1.2}
+.proj p{margin:0 0 12px;font-size:16px;color:var(--soft)}
+.proj small{font-size:14px;color:var(--brown);font-weight:600}
+.path ol{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:3px solid var(--mag);margin-left:8px}
+.path li{position:relative;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 28px;padding:0 0 30px 28px}
+.path li::before{content:"";position:absolute;left:-11px;top:4px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:3px solid var(--mag)}
+.path time{font-weight:800;font-size:20px;white-space:nowrap;color:var(--brown);min-width:6.5em}
+.path h3{margin:0;font-size:19px}
+.path p{margin:4px 0 0;color:var(--soft);max-width:62ch}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px)}
+.posts a{display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600}
+.posts a:hover{color:var(--mag)}
+.posts span{color:var(--soft);font-weight:400;font-size:15px;white-space:nowrap}
+.contact{background:var(--ink);color:var(--bg)}
+.contact .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:start}
+.contact p{margin:0 0 14px;max-width:52ch}
+form{display:grid;gap:12px}
+label{font-size:15px;font-weight:600}
+input,textarea{width:100%;font:16px Overpass,sans-serif;padding:12px;border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);background:color-mix(in srgb,var(--bg) 8%,transparent);color:var(--bg)}
+textarea{min-height:110px;resize:vertical}
+button{justify-self:start;font:800 16px Overpass,sans-serif;background:var(--mag);color:#fff;border:0;padding:12px 22px;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+.ok{font-weight:600;color:var(--bg)}
+.links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:10px}
+.contact a{color:var(--bg)}
+footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.sample{background:var(--mag);color:#fff;text-align:center;font-size:14px;font-weight:600;padding:8px 16px}
+@media(max-width:860px){.projects{grid-template-columns:minmax(0,1fr)}.proj{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr)}.proj svg{height:100%;min-height:150px;border-bottom:0;border-right:1px solid var(--line)}}
+@media(max-width:700px){.about,.split,.contact .wrap{grid-template-columns:minmax(0,1fr)}.hero{min-height:0;display:flex;flex-direction:column}.map{position:relative;height:420px}.legend{position:relative;left:auto;bottom:auto;width:auto;margin:-40px 16px 0}.path li{grid-template-columns:minmax(0,1fr);gap:2px}.proj{display:flex}.proj svg{height:150px;border-right:0;border-bottom:1px solid var(--line)}}
+@media(prefers-reduced-motion:no-preference){.route{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.4s ease-out .3s forwards}@keyframes draw{to{stroke-dashoffset:0}}}
+</style>
+</head>
+<body>
+
+<div class="sample">Sample content: tell Claude about yourself and this becomes yours.</div>
+
+<header class="hero">
+  <nav><b>Alex Rivera</b><div><a href="#about">About</a><a href="#work">Work</a><a href="#path">Path</a><a href="#writing">Writing</a><a href="#contact">Contact</a></div></nav>
+  <div class="map" id="map"></div>
+  <div class="legend">
+    <h1>Alex Rivera</h1>
+    <p>Product designer and front-end developer. I make tools that help small teams find their way through messy information.</p>
+    <a class="btn" href="#contact">Get in touch</a>
+    <div class="keys"><span><i></i>Route so far</span><span><i class="c"></i>Things I learned along the way</span></div>
+  </div>
+</header>
+
+<section class="band" id="about"><div class="wrap about">
+  <div>
+    <h2>I like turning complicated things into maps people can read.</h2>
+    <p>For the last eight years I've designed and built software for researchers, city planners and nonprofits. Most of that work starts the same way: a spreadsheet nobody fully understands, and a team that needs to make a decision from it.</p>
+    <p>I work across the whole stretch, from interviews and sketches to shipping the code. Right now I'm independent, taking on two or three projects a year, and writing about interface design on the side.</p>
+    <p>Away from the screen I hike, draw terrible watercolours, and collect old survey maps.</p>
+  </div>
+  <dl class="facts">
+    <div><dt>Based in</dt><dd>Portland, Oregon</dd></div>
+    <div><dt>Focus</dt><dd>Data tools, maps, design systems</dd></div>
+    <div><dt>Stack</dt><dd>Figma, TypeScript, React, D3</dd></div>
+    <div><dt>Currently</dt><dd>Open to one new project in 2027</dd></div>
+    <div><dt>Languages</dt><dd>English, Spanish</dd></div>
+  </dl>
+</div></section>
+
+<section class="band work" id="work"><div class="wrap">
+  <h2>Selected work</h2>
+  <div class="projects" id="projects"></div>
+</div></section>
+
+<section class="band path" id="path"><div class="wrap">
+  <h2>The route so far</h2>
+  <ol id="timeline"></ol>
+</div></section>
+
+<section class="band" id="writing"><div class="wrap split">
+  <div>
+    <h2>Writing</h2>
+    <p style="margin:0;color:var(--soft);max-width:44ch">Occasional essays on interface design, maps and making sense of data. Roughly one a month.</p>
+  </div>
+  <div class="posts" id="posts"></div>
+</div></section>
+
+<section class="band contact" id="contact"><div class="wrap">
+  <div>
+    <h2>Let's talk</h2>
+    <p>Have a project, a question, or a map you think I'd like? Send a note and I'll reply within a few days.</p>
+    <p>alex@example.com</p>
+    <div class="links"><a href="https://github.com">GitHub</a><a href="https://www.linkedin.com">LinkedIn</a><a href="#writing">Writing</a></div>
+  </div>
+  <form id="f">
+    <label for="n">Name</label><input id="n" required autocomplete="name">
+    <label for="e">Email</label><input id="e" type="email" required autocomplete="email">
+    <label for="m">Message</label><textarea id="m" required></textarea>
+    <button>Send message</button>
+    <p class="ok" id="ok" hidden>Thanks. This is a demo form, so nothing was sent yet.</p>
+  </form>
+</div></section>
+
+<footer><span>© 2026 Alex Rivera</span><span>Made with care in Portland</span></footer>
+
+<script>
+{
+const stops=[{y:'2016',t:'Design school'},{y:'2018',t:'Civic Lab'},{y:'2021',t:'Fieldnote'},{y:'2024',t:'Independent'},{y:'Next',t:'Your project?'}];
+const timeline=[
+  ['2024 – now','Independent designer & developer','Data tools and maps for nonprofits and research groups. Clients include two county transit agencies and a watershed council.'],
+  ['2021 – 2024','Lead product designer, Fieldnote','Led design for a field research app used by ecology teams. Built the design system and much of its front end.'],
+  ['2018 – 2021','Designer, Civic Lab','Made public dashboards for city budgets and housing data, from interviews with residents to production code.'],
+  ['2014 – 2018','BFA in Interaction Design','Thesis on how people read topographic maps, which still shapes how I think about interfaces.']];
+const projects=[
+  ['Watershed Atlas','An interactive atlas of 40 years of river data, built for a regional watershed council.','Design + development, 2025',0],
+  ['Transit Pulse','A live dashboard showing bus reliability by neighbourhood for a county transit agency.','Design, 2024',1],
+  ['Fieldnote Kit','The design system behind Fieldnote: 60 components, documented and themed.','Design system, 2022',2]];
+const posts=[['Maps are interfaces too','Sep 2026'],['The case for boring dashboards','Jul 2026'],['What contour lines taught me about hierarchy','Apr 2026'],['Designing for people who distrust charts','Jan 2026']];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+
+document.getElementById('timeline').innerHTML=timeline.map(([d,h,p])=>`<li><time>${esc(d)}</time><div><h3>${esc(h)}</h3><p>${esc(p)}</p></div></li>`).join('');
+document.getElementById('posts').innerHTML=posts.map(([t,d])=>`<a href="#writing">${esc(t)}<span>${esc(d)}</span></a>`).join('');
+
+const art=k=>{
+  let s='';
+  if(k===0){for(let i=0;i<7;i++)s+=`<path d="M0 ${40+i*18} C 80 ${20+i*18}, 140 ${80+i*14}, 300 ${30+i*20}" fill="none" stroke="var(--brown)" stroke-width="1.5" opacity="${.35+i*.08}"/>`;s+=`<path d="M10 150 C 90 120 120 90 170 95 S 260 60 300 40" fill="none" stroke="var(--mag)" stroke-width="4"/>`}
+  if(k===1){const h=[60,95,70,120,85,130,105,140,90];h.forEach((v,i)=>s+=`<rect x="${18+i*31}" y="${165-v}" width="20" height="${v}" fill="${i===7?'var(--mag)':'var(--sea)'}"/>`)}
+  if(k===2){for(let r=0;r<4;r++)for(let c=0;c<7;c++){const q=(r*7+c)%5;s+=`<rect x="${16+c*40}" y="${16+r*36}" width="30" height="26" rx="${q%2?13:3}" fill="${q===0?'var(--mag)':q===2?'var(--brown)':'var(--sea)'}" opacity="${q===0?1:.8}"/>`}}
+  return `<svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="170" fill="var(--bg)"/>${s}</svg>`};
+document.getElementById('projects').innerHTML=projects.map(([t,p,m,k])=>`<article class="proj">${art(k)}<div><h3>${esc(t)}</h3><p>${esc(p)}</p><small>${esc(m)}</small></div></article>`).join('');
+
+const box=document.getElementById('map');
+let seed=7;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const peaks=Array.from({length:5},()=>({x:rnd(),y:rnd()*.8,r:.18+rnd()*.22,p:[rnd()*6,rnd()*6,rnd()*6]}));
+const draw=()=>{
+  const W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;
+  const narrow=W<700,S=Math.max(W,H);
+  let g='';
+  peaks.forEach((pk,pi)=>{
+    const cx=pk.x*W,cy=pk.y*H;
+    for(let l=1;l<=9;l++){
+      const R=pk.r*S*l/9;let d='';
+      for(let a=0;a<=64;a++){const t=a/64*Math.PI*2;const rr=R*(1+.18*Math.sin(3*t+pk.p[0])+.1*Math.sin(5*t+pk.p[1]+l*.3)+.06*Math.sin(2*t+pk.p[2]));d+=(a?'L':'M')+(cx+rr*Math.cos(t)).toFixed(1)+' '+(cy+rr*.7*Math.sin(t)).toFixed(1)}
+      g+=`<path d="${d}Z" fill="${l===1?'color-mix(in srgb,var(--brown) 18%,transparent)':'none'}" stroke="var(--brown)" stroke-width="${l%3===0?1.6:.8}" opacity="${.25+.06*(9-l)}"/>`}
+  });
+  const top=narrow?.2:.22,bot=narrow?.78:.62,left=narrow?.1:.46;
+  const pts=stops.map((s,i)=>{const f=i/(stops.length-1);return[ (left+f*(.92-left))*W, (bot-f*(bot-top))*H+(i%2?-1:1)*H*.05 ]});
+  let rd=`M${pts[0][0]} ${pts[0][1]}`;
+  for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[c,d]=pts[i];rd+=` C ${a+(c-a)*.5} ${b}, ${a+(c-a)*.5} ${d}, ${c} ${d}`}
+  const route=`<path class="route" d="${rd}" fill="none" stroke="var(--mag)" stroke-width="4" stroke-linecap="round"/>`;
+  const dots=pts.map(([x,y],i)=>{const last=i===pts.length-1,anchor=x>W*.8?'end':'start',dx=anchor==='end'?-14:14;
+    return `<circle cx="${x}" cy="${y}" r="${last?9:7}" fill="${last?'var(--bg)':'var(--mag)'}" stroke="var(--mag)" stroke-width="3" ${last?'stroke-dasharray="4 3"':''}/>
+    <text x="${x+dx}" y="${y-12}" text-anchor="${anchor}" font-weight="800">${esc(stops[i].y)}</text><text x="${x+dx}" y="${y+6}" text-anchor="${anchor}">${esc(stops[i].t)}</text>`}).join('');
+  box.innerHTML=`<svg aria-label="Map of Alex's career route" role="img"><rect width="${W}" height="${H}" fill="var(--bg)"/>${g}${route}${dots}</svg>`;
+  const rp=box.querySelector('.route');if(rp)rp.style.setProperty('--len',Math.ceil(rp.getTotalLength()));
+};
+const ro=new ResizeObserver(draw);ro.observe(box);
+
+const f=document.getElementById('f');
+f.addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').hidden=false;f.reset()});
+}
+</script>
+</body>
+</html>
